@@ -1,33 +1,321 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+﻿<!DOCTYPE >
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<link href="css/jquery.mobile-1.4.5.css" rel="stylesheet" />
-<link href="css/jquery.mobile.theme-1.4.5.css" rel="stylesheet" />
-<script src="phonegap.js" type="text/javascript"></script>
-<link href="css/jquery.mobile.structure-1.4.5.css" rel="stylesheet" />
-<script src="js/jquery-2.1.4.min.js" type="text/javascript" ></script>
-<script src="js/jquery.mobile-1.4.5.js" type="text/javascript"></script> 
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Documento sin título</title>
-<style type="text/css">
-	p{
-		text-align:center;
-	}
-</style>
-</head>
+    <head>
+        <link href="css/jquery.mobile-1.4.5.css" rel="stylesheet" />
+        <link href="css/jquery.mobile.theme-1.4.5.css" rel="stylesheet" />
+        <script src="phonegap.js" type="text/javascript"></script>
+        <link href="css/jquery.mobile.structure-1.4.5.css" rel="stylesheet" />
+        <script src="js/jquery-2.1.4.min.js" type="text/javascript" ></script>
+        <script src="js/jquery.mobile-1.4.5.js" type="text/javascript"></script> 
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Documento sin título</title>
+        <style type="text/css">
+            p{
+                text-align:center;
+            }
+        </style>
+        <script type="text/javascript">
+            document.addEventListener("deviceready", function () {
+                //boton guardar
+                $("#btnGuardar").tap(function () {
+                    var nom = $("#nomProducto").val();
+                    var clave = $("#claveProducto").val();
+                    var precio = $("#precioProducto").val();
+                    var exist = $("#existProducto").val();
+                    var provee = $("#proveProducto").val();
+                    if (nom == "" || clave == "" || precio == "" || exist == "" || provee == "") {
+                        alert("Favor de registrar valores en todos los campos");
+                    }
+                    else {
+                        var p = parseFloat(precio);
+                        var e = parseInt(exist);
+                        //alert("precio "+p +" exist "+ e);
+                        var datos = "nomb=" + nom + "&clav=" + clave +
+                                "&prec=" + p + "&existen=" + e + "&prov=" + provee;
+                        $.ajax({url: "guardar.php",
+                            type: "POST",
+                            data: datos,
+                            success: exeGuardar});
+                        function exeGuardar(mensaje) {
+                            alert(mensaje);
+                        }
+                    }
+                });
+                //botón consulta
+                $("#btnConsulta").tap(function () {
+                    $.ajax({
+                        type: "POST",
+                        url: "consultaTodo.php",
+                        data: "",
+                        success: function (datos) {
+                            //alert("resp: " +datos);
+                            var reg = $.parseJSON(datos);
+                            var result = $("#todoReg");
+                            //.append(agrega al final) y .html(borra todo elcontenido del control)
+                            result.html("<table id='tb1' border = '1'><th>Id</th><th>Nom_Producto</th>\n\
+                    <th>Clave</th><th>Precio</th><th>Existencia</th><th>Proveedor</th>");
+                            var fila = $("#tb1");
+                            for (i = 0; i < reg.length; i++) {//var i in reg
+                                fila.append("<tr><td>" + reg[i].id + "</td><td>" +
+                                        reg[i].nombre_equipo + "</td><td>" +
+                                        reg[i].clave + "</td> <td>" +
+                                        reg[i].precio + "</td><td>" +
+                                        reg[i].existencia + "</td><td>" +
+                                        reg[i].proveedor + "</td></tr>");
+                            }
+                            fila.append("</table>");
+                        }
+                    });
+                });
+                //boton mostrar un registro
+                $("#btnConId").tap(function () {
+                    var id = $("#idReg").val();
+                    $.ajax({
+                        type: "POST",
+                        url: "consultaId.php",
+                        data: "id=" + id,
+                        success: function (datos) {
+                            //alert("resp: " +datos);
+                            var reg1 = $.parseJSON(datos);
+                            var result1 = $("#datID");
+                            //.append(agrega al final) y .html(borra todo elcontenido del control)
+                            result1.html("<table id='tb2' border = '1'><th>Id</th><th>Nom_Producto</th>\n\
+                    <th>Clave</th><th>Precio</th><th>Existencia</th><th>Proveedor</th>");
+                            var fila1 = $("#tb2");
+                            for (i = 0; i < reg1.length; i++) {//var i in reg
+                                fila1.append("<tr><td>" + reg1[i].id + "</td><td>" +
+                                        reg1[i].nombre_equipo + "</td><td>" +
+                                        reg1[i].clave + "</td> <td>" +
+                                        reg1[i].precio + "</td><td>" +
+                                        reg1[i].existencia + "</td><td>" +
+                                        reg1[i].proveedor + "</td></tr>");
+                            }
+                            fila1.append("</table>");
+                        }
+                    });
+                });
+                //boton mostrar todo de eliminar
+                $("#btnConsultaE").tap(function () {
+                    $.ajax({
+                        type: "POST",
+                        url: "consultaTodo.php",
+                        data: "",
+                        success: function (datos) {
+                            //alert("resp: " +datos);
+                            var reg = $.parseJSON(datos);
+                            var result = $("#todoRegE");
+                            //.append(agrega al final) y .html(borra todo elcontenido del control)
+                            result.html("<table id='tb3' border = '1'><th>Id</th><th>Nom_Producto</th>\n\
+                    <th>Clave</th><th>Precio</th><th>Existencia</th><th>Proveedor</th>");
+                            var fila = $("#tb3");
+                            for (i = 0; i < reg.length; i++) {//var i in reg
+                                fila.append("<tr><td>" + reg[i].id + "</td><td>" +
+                                        reg[i].nombre_equipo + "</td><td>" +
+                                        reg[i].clave + "</td> <td>" +
+                                        reg[i].precio + "</td><td>" +
+                                        reg[i].existencia + "</td><td>" +
+                                        reg[i].proveedor + "</td></tr>");
+                            }
+                            fila.append("</table>");
+                        }
+                    });
+                });
+                //boton eliminar registro
+                $("#btnElimId").tap(function () {
+                    var id = $("#idRegEliminar").val();
+                    $.ajax({
+                        type: "POST",
+                        url: "eliminar.php",
+                        data: "id=" + id,
+                        success: function (datos) {
+                            alert("Respuesta: " + datos);
+                        }
+                    });
+                });
+                //boton mostrar todo, modificar
+                $("#btnConsultaAct").tap(function () {
+                    $.ajax({
+                        type: "POST",
+                        url: "consultaTodo.php",
+                        data: "",
+                        success: function (datos) {
+                            //alert("resp: " +datos);
+                            var reg = $.parseJSON(datos);
+                            var result = $("#todoRegAct");
+                            //.append(agrega al final) y .html(borra todo elcontenido del control)
+                            result.html("<table id='tb4' border = '1'><th>Id</th><th>Nom_Producto</th>\n\
+                    <th>Clave</th><th>Precio</th><th>Existencia</th><th>Proveedor</th>");
+                            var fila = $("#tb4");
+                            for (i = 0; i < reg.length; i++) {//var i in reg
+                                fila.append("<tr><td>" + reg[i].id + "</td><td>" +
+                                        reg[i].nombre_equipo + "</td><td>" +
+                                        reg[i].clave + "</td> <td>" +
+                                        reg[i].precio + "</td><td>" +
+                                        reg[i].existencia + "</td><td>" +
+                                        reg[i].proveedor + "</td></tr>");
+                            }
+                            fila.append("</table>");
+                        }
+                    });
+                });
+                //boton mostrar un solo registro
+                $("#btnCargarDatos").tap(function () {
+                    var id = $("#idRegAct").val();
+                    $.ajax({
+                        type: "POST",
+                        url: "consultaId.php",
+                        data: "id=" + id,
+                        success: function (datos) {
+                            if (datos == "[]")
+                            {
+                                alert("no hay datos");
+                                return;
+                            }
+                            var resp = $.parseJSON(datos);
+                            var controles = $("#datIDAct");
+                            controles.html(
+                                    "Id: <input type='text' id ='id1' readonly/><br>" +
+                                    "Nombre: <input type='text' id='n1'/><br/>" +
+                                    "Clave: <input type='text' id='cla1'/><br/>" +
+                                    "Precio: <input type='text' id='pre1'/><br/>" +
+                                    "Existencia: <input type='text' id='exist1'/><br/>" +
+                                    "Proveedor: <input type='text' id='provee1'/><br/>"
+                                    );
+                            $("#id1").val(resp[0].id);
+                            $("#n1").val(resp[0].nombre_equipo);
+                            $("#cla1").val(resp[0].clave);
+                            $("#pre1").val(resp[0].precio);
+                            $("#exist1").val(resp[0].existencia);
+                            $("#provee1").val(resp[0].proveedor);
+                        }
+                    });
+                });
+                //boton que actualiza todos los cambios btnActId
+                $("#btnActId").tap(function () {
+                    var id = $("#id1").val();
+                    var nom = $("#n1").val();
+                    var clav = $("#cla1").val();
+                    var pre = $("#pre1").val();
+                    var exis = $("#exist1").val();
+                    var prove = $("#provee1").val();
+                    var dat = "id="+id+"&nom="+nom+"&clav="+clav+"&pre="+pre+
+                            "&exis="+exis+"&prove="+prove;
+                    $.ajax({
+                        type: "POST",
+                        url: "actualizar.php",
+                        data: dat,
+                        success: function (datos) {
+                            alert(datos);
+                        }
+                    });
+                });
+            }, false);
 
-<body>
-<div data-role="page" id="principal" data-theme="b">
-	<div data-role="header">
-    	<p>Encabezado de la aplicación</p>
-    </div> 
-    <div data-role="content">
-    	<p>Contenido de la aplicación</p>
-    </div>
-    <div data-role="footer" data-position="fixed">
-    	<p>Pie de aplicación</p>
-    </div>
-</div>
+        </script>
+    </head>
 
-</body>
+
+
+    <div data-role="page" id="principal" data-theme="b">
+
+
+
+        <div data-role="header">
+            <p>Opciones</p>
+        </div> 
+        <div data-role="content">
+            <ul data-role="listview">
+                <li><a href="#insertar">Registrar productos</a></li>
+                <li><a href="#consultar">Consultar productos</a></li>
+                <li><a href="#eliminar">Eliminar productos</a></li>
+                <li><a href="#actualizar">Modificar productos</a></li>
+            </ul>
+        </div>
+        <div data-role="footer" data-position="fixed">
+            <p>Pie de aplicación</p>
+        </div>
+
+    </div>
+    <!--insertar-->
+    <div data-role="page" id="insertar">
+        <div data-role="header">
+            <p>Registrar productos</p>
+        </div>
+        <div data-role="content">
+            <input type="text" id="nomProducto" placeholder="Nombre producto"/>
+            <input type="text" id="claveProducto" placeholder="Clave producto"/>
+            <input type="text" id="precioProducto" placeholder="Precio producto"/>
+            <input type="text" id="existProducto" placeholder="Cantidad existente de producto"/>
+            <input type="text" id="proveProducto" placeholder="Proveedor del producto"/>
+            <input type="button" value="Guardar" id="btnGuardar"/>
+
+        </div>
+
+        <div data-role="footer">
+            <p>Pie de pagina</p>
+        </div>
+
+    </div>
+    <!--termina insertar-->
+
+    <!--consultar-->
+    <div data-role="page" id="consultar">
+        <div data-role="header">
+            <p>Consultar productos</p>
+        </div>
+        <div data-role="content">
+            <input type="button" id="btnConsulta" value="Mostrar todo"/>
+            <div id="todoReg"></div>
+            <input type="text" id="idReg" placeholder="Id a buscar"/>
+            <div id="datID"></div>
+            <input type="button" id ="btnConId" value="Consultar registro"/>
+        </div>
+
+        <div data-role="footer">
+            <p>Pie de pagina</p>
+        </div>
+
+    </div>
+    <!--termina consultar-->
+
+    <!--Eliminar-->
+    <div data-role="page" id="eliminar">
+        <div data-role="header">
+            <p>Eliminar productos</p>
+        </div>
+        <div data-role="content">
+            <input type="button" id="btnConsultaE" value="Mostrar todo"/>
+            <div id="todoRegE"></div>
+            <input type="text" id="idRegEliminar" placeholder="Id a eliminar"/>
+            <input type="button" id ="btnElimId" value="Eliminar registro"/>
+        </div>
+
+        <div data-role="footer">
+            <p>Pie de pagina</p>
+        </div>
+
+    </div>
+    <!--termina eliminar-->
+
+    <!--Modificar-->
+    <div data-role="page" id="actualizar">
+        <div data-role="header">
+            <p>Modificar productos</p>
+        </div>
+        <div data-role="content">
+            <input type="button" id="btnConsultaAct" value="Mostrar todo"/>
+            <div id="todoRegAct"></div>
+            <input type="text" id="idRegAct" placeholder="Id a actualizar"/>
+            <input type="button" id="btnCargarDatos" value="Cargar datos"/>
+            <div id="datIDAct"></div>
+            <input type="button" id ="btnActId" value="Guardar cambios"/>
+        </div>
+
+        <div data-role="footer">
+            <p>Pie de pagina</p>
+        </div>
+
+    </div>
+    <!--termina eliminar-->
+
 </html>

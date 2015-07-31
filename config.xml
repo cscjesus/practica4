@@ -1,11 +1,10 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.phonegap.helloworld" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
-    <name>Acelerometro</name>
+    <name>Almacenamiento</name>
     <description>
-        Manejo de parametros de captura del acelerometro
-    </description>
+        Almacenamiento de información de manera remota a un servidor en hostinger.</description>
     <author email="support@phonegap.com" href="http://phonegap.com">
-        Alejandro Guzmán Rodríguez
+        Jesus Hernandez Leon
     </author>
     <content src="index.html" />
     <preference name="permissions" value="none" />
