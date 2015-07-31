@@ -32,7 +32,7 @@
                         //alert("precio "+p +" exist "+ e);
                         var datos = "nomb=" + nom + "&clav=" + clave +
                                 "&prec=" + p + "&existen=" + e + "&prov=" + provee;
-                        $.ajax({url: "guardar.php",
+                        $.ajax({url: "http://progweb.hol.es/practica4/guardar.php",
                             type: "POST",
                             data: datos,
                             success: exeGuardar});
@@ -45,7 +45,7 @@
                 $("#btnConsulta").tap(function () {
                     $.ajax({
                         type: "POST",
-                        url: "consultaTodo.php",
+                        url: "http://progweb.hol.es/practica4/consultaTodo.php",
                         data: "",
                         success: function (datos) {
                             //alert("resp: " +datos);
@@ -72,7 +72,7 @@
                     var id = $("#idReg").val();
                     $.ajax({
                         type: "POST",
-                        url: "consultaId.php",
+                        url: "http://progweb.hol.es/practica4/consultaId.php",
                         data: "id=" + id,
                         success: function (datos) {
                             //alert("resp: " +datos);
@@ -98,7 +98,7 @@
                 $("#btnConsultaE").tap(function () {
                     $.ajax({
                         type: "POST",
-                        url: "consultaTodo.php",
+                        url: "http://progweb.hol.es/practica4/consultaTodo.php",
                         data: "",
                         success: function (datos) {
                             //alert("resp: " +datos);
@@ -125,7 +125,7 @@
                     var id = $("#idRegEliminar").val();
                     $.ajax({
                         type: "POST",
-                        url: "eliminar.php",
+                        url: "http://progweb.hol.es/practica4/eliminar.php",
                         data: "id=" + id,
                         success: function (datos) {
                             alert("Respuesta: " + datos);
@@ -136,7 +136,7 @@
                 $("#btnConsultaAct").tap(function () {
                     $.ajax({
                         type: "POST",
-                        url: "consultaTodo.php",
+                        url: "http://progweb.hol.es/practica4/consultaTodo.php",
                         data: "",
                         success: function (datos) {
                             //alert("resp: " +datos);
@@ -163,7 +163,7 @@
                     var id = $("#idRegAct").val();
                     $.ajax({
                         type: "POST",
-                        url: "consultaId.php",
+                        url: "http://progweb.hol.es/practica4/consultaId.php",
                         data: "id=" + id,
                         success: function (datos) {
                             if (datos == "[]")
@@ -202,7 +202,7 @@
                             "&exis="+exis+"&prove="+prove;
                     $.ajax({
                         type: "POST",
-                        url: "actualizar.php",
+                        url: "http://progweb.hol.es/practica4/actualizar.php",
                         data: dat,
                         success: function (datos) {
                             alert(datos);
